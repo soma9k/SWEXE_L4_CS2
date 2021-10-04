@@ -8,7 +8,8 @@ class TopController < ApplicationController
     end
     
     def login
-        if params[:uid] == 'kindai' and params[:pass] == 'sanriko'
+        user.pass = Bcypt::Password.create(User.find_by(pass: params[:pass]))
+        if User.find_by(uid: params[:uid]) and Bcypt::Password.new(user.pass) == User.find_by(pass: params[:pass])
             session[:login_uid] = params[:uid]
             render 'main'
         else
